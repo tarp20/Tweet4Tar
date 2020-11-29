@@ -6,14 +6,39 @@ Home
     
 
 {% block content %}
-    Welcome to <h1>T$T</h1>
-
-    <div id = 'tweets'>
+    <div class = 'row text-center'>
+      <div class="col">
+       <h1> Welcome to T$T</h1>
+      </div>
+    </div>
+  
+     
+    <div class= 'row'  id = 'tweets'>
        Loading...
     </div>
 
 
-    <script>
+    <script> 
+        function handleDidLike(tweet_id, currentCount){
+          console.log(tweet_id,currentCount)
+          currentCount++;
+          return 
+
+        }
+
+
+
+        function LikeBtn(tweet) {
+          return "<button class='btn btn-primary btn-sm' onclick =handleDidLike("+
+           tweet.id +"," +  tweet.likes + ") >"+tweet.likes+" Likes</button>"
+
+        }
+
+        function formatTweetElement(tweet){
+          var formattedTweet =`<div class='col-12 col-md-10 mx-auto border rounded  py-3 mb-4 tweet' id='tweet-${tweet['id']}'><p>${tweet['content']}</p><div class='btn-group'> ${LikeBtn(tweet)}</div/></div>`
+          return formattedTweet;
+        }
+        
         const asyncRequst = async (url) => {
             const request = await fetch(url)
             return resultBody = await request.json()
@@ -27,9 +52,8 @@ Home
            
         
             const finalTweetStr = result.reduce((acc, element, index) => {
-              console.log(index)
-              console.log(element)
-              return acc + `<div class='mb-4'><h1>${element['id']}</h1><p>${element['content']}</p></div>\n`
+              var tweetObj = element
+              return acc + formatTweetElement(tweetObj)
             }, '')
             var tweetsElement = "";
             document.getElementById('tweets').innerHTML  = finalTweetStr;
