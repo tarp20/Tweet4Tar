@@ -14,32 +14,31 @@ Home
 
 
     <script>
-        const tweetsElement = document.getElementById('tweets')
-
-                const xhr = new XMLHttpRequest();
-        const method  = 'GET'
-        const url = '/tweets'
-        const responseType = 'json'
-        
-        
-        xhr.responseType = responseType
-        xhr.open(method,url )
-        xhr.onload = function(){
-            
-            const serverResponse = xhr.response
-            const listedItems = serverResponse.response
-            console.log(listedItems)
-            var finalTweetStr = ""
-            var i;
-            for(i=0;i<listedItems.length;i++){
-                console.log(i)
-                console.log(listedItems[i])
-                var currentItem = "<div class='mb-4'><h1>"+listedItems[i].id +  "</h1>"+"<p>"+ listedItems[i].content+"</p></div>"
-                 finalTweetStr += currentItem
-            }
-            tweetsElement.innerHTML = finalTweetStr;
+        const asyncRequst = async (url) => {
+            const request = await fetch(url)
+            return resultBody = await request.json()
         }
-        xhr.send();
+        
+        (async () => {
+          try{
+            const result = await asyncRequst('/tweets')
+            console.log(result)
+        
+           
+        
+            const finalTweetStr = result.reduce((acc, element, index) => {
+              console.log(index)
+              console.log(element)
+              return acc + `<div class='mb-4'><h1>${element['id']}</h1><p>${element['content']}</p></div>\n`
+            }, '')
+            var tweetsElement = "";
+            document.getElementById('tweets').innerHTML  = finalTweetStr;
+          }
+          catch(e){
+            console.log('Error occured: ', e)
+          }
+        })()
+
     </script>
 {% endblock  %}
     
