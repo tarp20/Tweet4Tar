@@ -1,9 +1,9 @@
 1. Tweets
-add,delete,update
+add,delete,update,liking
 
 
 
-2. USers
+2. users
 
 new users
 
