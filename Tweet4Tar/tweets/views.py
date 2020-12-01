@@ -4,9 +4,9 @@ from django.conf import settings
 from django.shortcuts import render,redirect
 from rest_framework import generics
 from django.utils.http import is_safe_url
-from .serializers import TweetListSerializer
 from .forms import TweetForm
 from .models import Tweet
+import random
 
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
@@ -15,9 +15,14 @@ def home_view(request,*args,**kwargs):
     return render(request,'pages/home.html',context={},status=200)
 
 
-class TweetsListApiView(generics.ListCreateAPIView):
-    queryset = Tweet.objects.all()
-    serializer_class = TweetListSerializer
+def tweet_list_view(request,*args,**kwargs):
+    qs = Tweet.objects.all()
+    tweets_list = [{'id':x.id,'content':x.content,'likes':random.randint(1,500)} for x in qs]
+    data = {
+        'response':tweets_list
+    }
+    return JsonResponse(data)
+
   
 
 def tweet_create_view(request,*args,**kwargs):
