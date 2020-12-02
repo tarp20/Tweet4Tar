@@ -86,7 +86,9 @@ Home
            }
            else if(xhr.status===500){
             alert("There was a server errorPlease try again later.")
-
+           }  else if(xhr.status===401){
+            alert("You must login to add tweet")
+            window.location.href = "/login"
            }
          
         }
