@@ -5,7 +5,7 @@ from django.shortcuts import render,redirect
 
 from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework.decorators import api_view,permission_classes,authentication_classes
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
 from django.utils.http import is_safe_url
@@ -21,9 +21,10 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 def home_view(request,*args,**kwargs):
     return render(request,'pages/home.html',context={},status=200)
 
+
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
 #@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
 def tweet_create_view(request,*args,**kwargs):
     serializer = TweetSerializer(data=request.POST)
     if serializer.is_valid(raise_exception=True):
@@ -41,10 +42,23 @@ def tweet_list_view(request,*args,**kwargs):
 def tweet_detail_view(request,tweet_id,*args,**kwargs):
     qs = Tweet.objects.filter(id = tweet_id)
     if not qs.exists():
-        Response({},status = 404)
+        return Response({},status = 404)
     obj = qs.first()
     serializer = TweetSerializer(obj)
     return Response(serializer.data)
+
+@permission_classes([IsAuthenticated])
+@api_view(['DELETE'])
+def tweet_delete_view(request,tweet_id,*args,**kwargs):
+    qs = Tweet.objects.filter(id = tweet_id)
+    if not qs.exists():
+        return Response({},status = 404)
+    qs = qs.filter(user=request.user)
+    if not qs.exists():
+        return Response({'message':'You cannot delete this post'},status = 401)
+    obj = qs.first()
+    obj.delete()
+    return Response({'message':'Tweet has been deleted'},status=200)
 
 
 
