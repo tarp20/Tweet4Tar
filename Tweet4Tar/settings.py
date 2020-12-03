@@ -30,6 +30,8 @@ DEBUG =  config('DEBUG')
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
+MAX_TWEET_LENGTH = 240
+
 
 # Application definition
 
@@ -126,3 +128,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES' : [
+        'rest_framework.authentication.SessionAuthentication',
+        ],
+     'DEFAULT_RENDERER_CLASSES' :  [
+        'rest_framework.renderers.JSONRenderer',
+ #       'rest_framework.renderers.BrowsableAPIRenderer',
+        ],
+}

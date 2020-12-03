@@ -1,19 +1,20 @@
+from django.conf import settings
 from rest_framework import serializers
 from .models import Tweet
 import random
 
 
+MAX_TWEET_LENGTH = settings.MAX_TWEET_LENGTH
 
-
-class TweetListSerializer(serializers.ModelSerializer):
-    likes = serializers.SerializerMethodField('get_likes')
+class TweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
-        fields = ['id','content','likes']
+        fields = ['content']
     
-    def get_likes(self,request):
-        return random.randint(0,9999)
-
+    def validate_content(self,value):
+        if len(value)>MAX_TWEET_LENGTH:
+            raise serializers.ValidationError("This tweet is too long")
+        return value
 
 
     
