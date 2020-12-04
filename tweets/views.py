@@ -61,6 +61,19 @@ def tweet_delete_view(request,tweet_id,*args,**kwargs):
     return Response({'message':'Tweet has been deleted'},status=200)
 
 
+@permission_classes([IsAuthenticated])
+@api_view(['DELETE'])
+def tweet_like_toggle_view(request,tweet_id,*args,**kwargs):
+    qs = Tweet.objects.filter(id = tweet_id)
+    if not qs.exists():
+        return Response({},status = 404)
+    obj = qs.first()
+    obj.likes.add(request.user)
+    return Response({'message':'Tweet has been deleted'},status=200)
+
+
+
+
 
 
 
