@@ -32,6 +32,8 @@ ALLOWED_HOSTS = ['127.0.0.1']
 
 MAX_TWEET_LENGTH = 240
 
+TWEET_ACTION_OPTION = ['like','unlike','retweet']
+
 
 # Application definition
 
@@ -44,8 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tweets',
     'rest_framework',
-    
-]
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -143,5 +144,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES' : [
         'rest_framework.authentication.SessionAuthentication',
         ],
+   
    
 }
