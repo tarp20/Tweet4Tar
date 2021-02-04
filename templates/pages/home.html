@@ -109,7 +109,7 @@ Home
             alert("You must login to add tweet")
             window.location.href = "/login"
            }
-         
+         loadTweets(tweetContainerElement)
         }
         xhr.onerror = function(){
           alert("Please try again later.")
@@ -140,7 +140,6 @@ Home
           var i;
           for (i=0;i<listedItems.length; i++) {
               var tweetObj = listedItems[i]
-
               var currentItem = formatTweetElement(tweetObj)
               finalTweetStr += currentItem
           }
@@ -148,6 +147,7 @@ Home
         }
         xhr.send();
        }
+       
        
        loadTweets(tweetContainerElement)
 
